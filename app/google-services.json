@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "341037702929",
+    "firebase_url": "https://whatwilleattoday.firebaseio.com",
+    "project_id": "whatwilleattoday",
+    "storage_bucket": "whatwilleattoday.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341037702929:android:0868b64f24182f36",
+        "android_client_info": {
+          "package_name": "com.ppaper.norbi.whatwillweeattoday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341037702929-46f2pdqmo2qmecaequo1u69ltd2jag2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ppaper.norbi.whatwillweeattoday",
+            "certificate_hash": "0406d0642cbe8b848f8ec2d898323aa0d4a58b04"
+          }
+        },
+        {
+          "client_id": "341037702929-4vag1b5sr4cqpkiui9dgjnipr744vd3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP87aWxU1m3bM_5WBOCMCK8qHEpbGWAZ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341037702929-4vag1b5sr4cqpkiui9dgjnipr744vd3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
