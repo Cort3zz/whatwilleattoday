@@ -23,18 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignIn" />
-        <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme"></activity>
-        <activity
-            android:name=".FoodList"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme"></activity>
-        <activity
-            android:name=".FoodVote"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".Home" />
+        <activity android:name=".FoodList" />
+        <activity android:name=".FoodVote" />
+        <activity android:name=".CreateFood" />
     </application>
 
 </manifest>
