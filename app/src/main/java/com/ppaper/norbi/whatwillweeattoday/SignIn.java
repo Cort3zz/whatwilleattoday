@@ -2,6 +2,7 @@ package com.ppaper.norbi.whatwillweeattoday;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,15 +26,22 @@ import java.util.Map;
 public class SignIn extends AppCompatActivity {
     EditText edtName, edtPassword;
     Button btnSignIn;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        sp=getSharedPreferences("Login", MODE_PRIVATE);
 
         edtName = (MaterialEditText) findViewById(R.id.edtName);
         edtPassword = (MaterialEditText) findViewById(R.id.edtPassword);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
+
+        if(sp.getString("Unm", null)!=null) {
+           edtName.setText( sp.getString("Unm",null));
+           edtPassword.setText( sp.getString("Psw",null));
+        }
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
@@ -55,11 +63,21 @@ public class SignIn extends AppCompatActivity {
                             };
                             Map<String, String> map = dataSnapshot.child(edtName.getText().toString()).getValue(genericTypeIndicator);
                             if (map.get("password").equals(edtPassword.getText().toString())) {
-                                Intent homeIntent = new Intent(SignIn.this, Home.class);
-                                 Common.setCurrentUserName( edtName.getText().toString());
-                                 startActivity(homeIntent);
-                                 finish();
+                                SharedPreferences sp=getSharedPreferences("Login", MODE_PRIVATE);
 
+                                if(sp.getString("Unm", null)==null) {
+                                    SharedPreferences.Editor Ed = sp.edit();
+                                    Ed.putString("Unm", edtName.getText().toString());
+                                    Ed.putString("Psw", edtPassword.getText().toString());
+                                    Ed.commit();
+                                    Toast.makeText(SignIn.this, "Bejelentkezés sikeres! Az adataid mentésre kerültek.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                Intent homeIntent = new Intent(getApplicationContext(), Home.class);
+                                Common.setCurrentUserName(edtName.getText().toString());
+                                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(homeIntent);
+                                finishAffinity();
 
                             } else {
                                 Toast.makeText(SignIn.this, "Sikertelen Bejelentkezés!", Toast.LENGTH_SHORT).show();

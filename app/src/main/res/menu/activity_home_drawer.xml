@@ -5,20 +5,28 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/home-menu"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Kezdőlap" />
+
+        <item
+            android:id="@+id/food-create-menu"
+            android:icon="@drawable/ic_add_box_black_24dp"
+            android:title="Új étel" />
+        <item
             android:id="@+id/food-list-menu"
-            android:icon="@drawable/ic_assignment_black_24dp"
+            android:icon="@drawable/ic_view_list_black_24dp"
             android:title="Minden étel" />
 
         <item
             android:id="@+id/food-vote-menu"
             android:icon="@drawable/ic_assignment_black_24dp"
-            android:title="Szavazás" />
-
+            android:title="Szavazás (Később)" />
 
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_forward_black_24dp"
-            android:title="Kijelentkezés" />
+            android:title="Kilépés" />
 
 
     </group>

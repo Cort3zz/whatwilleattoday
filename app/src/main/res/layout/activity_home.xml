@@ -5,8 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@drawable/background"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <include
@@ -19,12 +19,56 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/overLayBackGound"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/activity_home_drawer"
-        app:itemTextColor="@android:color/white"
         app:itemIconTint="@android:color/white"
-        android:background="@color/overLayBackGound"/>
+        app:itemTextColor="@android:color/white"
+        app:menu="@menu/activity_home_drawer" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="200dp">
+
+            <TextView
+                android:id="@+id/questionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/menu_image"
+                android:layout_alignParentStart="true"
+                android:text="Nem tudod mi legyen a vacsora? Kattints a kérdőjelre!"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/menu_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="center|center_vertical"
+                android:scaleType="centerCrop"
+                android:src="@drawable/questionpng" />
+
+            <TextView
+                android:id="@+id/resultFoodNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/menu_image"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginBottom="-245dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="30sp" />
+
+
+
+        </RelativeLayout>
+
 
 
 </android.support.v4.widget.DrawerLayout>

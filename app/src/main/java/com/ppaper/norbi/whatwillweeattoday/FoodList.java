@@ -1,12 +1,14 @@
 package com.ppaper.norbi.whatwillweeattoday;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,8 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ppaper.norbi.whatwillweeattoday.Interface.ItemClickListener;
 import com.ppaper.norbi.whatwillweeattoday.MenuHolder.MenuViewHolder;
 import com.ppaper.norbi.whatwillweeattoday.domain.Common;
@@ -37,7 +42,7 @@ import java.util.Base64;
 public class FoodList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseDatabase database;
-    DatabaseReference food;
+    DatabaseReference foodReference;
 
     TextView userName;
     RecyclerView recyclerView;
@@ -76,7 +81,7 @@ public class FoodList extends AppCompatActivity
 
         //adatbázis betöltése
         database = FirebaseDatabase.getInstance();
-        food = database.getReference("Food");
+        foodReference = database.getReference("Food");
 
         //menü betöltése
         recyclerView = (RecyclerView) findViewById(R.id.recycler_menu);
@@ -89,28 +94,47 @@ public class FoodList extends AppCompatActivity
     }
 
     private void loadMenu() {
-        FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(Food.class, R.layout.menu_item, MenuViewHolder.class, food) {
+        ProgressDialog mDialog = new ProgressDialog(FoodList.this);
+        mDialog.setMessage("Kérlek várj...");
+        mDialog.show();
+
+        FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(Food.class, R.layout.menu_item, MenuViewHolder.class, foodReference) {
+
+
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Food model, int position) {
-                viewHolder.txtMenuName.setText(model.getName());
+
+                viewHolder.txtMenuName.setText(getRef(position).getKey());
                 try {
-                    File picture =   new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + model.getName() +".jpg");
-                    System.out.println(picture.getAbsolutePath());
-                    FileUtils.writeByteArrayToFile(picture,Base64.getDecoder().decode(model.getEncodedPicture()));
+                    File picture = File.createTempFile(getRef(position).getKey() + ".jpg", null, getCacheDir());
+                    FileUtils.writeByteArrayToFile(picture, Base64.getDecoder().decode(model.getEncodedPicture()));
                     Picasso.with(getBaseContext()).load(picture).into(viewHolder.imageView);
-                    final Food clickItem = model;
                     viewHolder.setItemClickListener(new ItemClickListener() {
                         @Override
                         public void onClick(View view, int position, boolean isLongClick) {
-                            Toast.makeText(FoodList.this,""+clickItem.getName(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodList.this, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
+
         };
+        foodReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+
+            }
+        });
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -119,9 +143,16 @@ public class FoodList extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){}
+        return false;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,15 +182,25 @@ public class FoodList extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.food_list_menu) {
-            Intent foodListIntent = new Intent(FoodList.this, FoodList.class);
+        if (id == R.id.home_menu) {
+            Intent foodListIntent = new Intent(FoodList.this
+                    , Home.class);
             startActivity(foodListIntent);
-        }else if (id == R.id.food_vote_menu) {
-            Intent foodListIntent = new Intent(FoodList.this, FoodVote.class);
-            startActivity(foodListIntent);
+            finishAffinity();
         }
-        else if (id == R.id.logout) {
+        if (id == R.id.food_list_menu) {
 
+        } else if (id == R.id.food_vote_menu) {
+            Toast.makeText(FoodList.this, "Nézz vissza később!", Toast.LENGTH_LONG).show();
+            //    Intent foodListIntent = new Intent(FoodList.this, FoodVote.class);
+        //    startActivity(foodListIntent);
+        } else if (id == R.id.food_create_menu) {
+            Intent foodListIntent = new Intent(FoodList.this, CreateFood.class);
+            startActivity(foodListIntent);
+        } else if (id == R.id.logout) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.food_list_drawer_layout);

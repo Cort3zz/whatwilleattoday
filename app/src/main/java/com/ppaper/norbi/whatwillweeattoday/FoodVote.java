@@ -91,9 +91,10 @@ public class FoodVote extends AppCompatActivity
         FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(Food.class, R.layout.vote_item, MenuViewHolder.class, food) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Food model, int position) {
-                viewHolder.txtMenuName.setText(model.getName());
+                //TODO ENCODEDRŐL NÉVRE!
+                viewHolder.txtMenuName.setText(model.getEncodedPicture());
                 try {
-                    File picture =   new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + model.getName() +".jpg");
+                    File picture =   new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + model.getEncodedPicture() +".jpg");
                     System.out.println(picture.getAbsolutePath());
                     FileUtils.writeByteArrayToFile(picture,Base64.getDecoder().decode(model.getEncodedPicture()));
                     Picasso.with(getBaseContext()).load(picture).into(viewHolder.imageView);
@@ -101,7 +102,7 @@ public class FoodVote extends AppCompatActivity
                     viewHolder.setItemClickListener(new ItemClickListener() {
                         @Override
                         public void onClick(View view, int position, boolean isLongClick) {
-                            Toast.makeText(FoodVote.this,""+clickItem.getName(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FoodVote.this,""+clickItem.getEncodedPicture(),Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (IOException e) {

@@ -53,40 +53,9 @@ TextView txtSlogan;
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signIn = new Intent(Generator.this, CreateFood.class);
+                Intent signIn = new Intent(Generator.this, SignIn.class);
                 startActivity(signIn);
 
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference table_food = database.getReference("Food");
-
-
-//        Food food = new Food();
-//        food.setReceipt("recept");
-//                try {
-//                    food.setEncodedPicture(  Base64.getEncoder().encodeToString(Files.readAllBytes(new File("/storage/self/primary/temp_file/Photo-01-02-2016-06-14-10.jpg").toPath())));
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                table_food.child("kajanagy").setValue(food);
-
-//                table_food.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        Food food = dataSnapshot.child("kajanagy").getValue(Food.class);
-//                        try {
-//                            FileUtils.writeByteArrayToFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/asd.jpg"),Base64.getDecoder().decode( food.getEncodedPicture()));
-//                            System.err.println(Environment.getExternalStorageDirectory().getAbsolutePath());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
             }
         });
 

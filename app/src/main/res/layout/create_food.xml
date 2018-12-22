@@ -4,6 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/imgBackgroundText"
+        android:layout_marginTop="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kattints ide a kép kiválasztásához"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        />
+
+</RelativeLayout>
 
     <LinearLayout
         android:layout_centerHorizontal="true"
@@ -14,6 +31,7 @@
         >
 
         <TextView
+            android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Új étel hozzáadása:"
@@ -22,6 +40,7 @@
             />
 
         <ImageView
+            android:background="#4f0e0d0e"
             android:layout_gravity="center"
             android:id="@+id/uploadedImage"
             android:layout_width="match_parent"
@@ -30,10 +49,11 @@
 
     </LinearLayout>
     <LinearLayout
+        android:layout_marginTop="300dp"
         android:orientation="vertical"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_centerInParent="true"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -41,7 +61,7 @@
 
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edtName"
+            android:id="@+id/newFoodName"
             android:hint="Étel neve"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,28 +76,19 @@
             />
 
 
-        <info.hoang8f.widget.FButton
 
-            android:id="@+id/btnUpload"
-            android:layout_width="150sp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_margin="8dp"
-            android:text="Kép feltöltése"
-            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
     <info.hoang8f.widget.FButton
 
-        android:id="@+id/btnSignIn"
+        android:id="@+id/btnCreate"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_margin="8dp"
-        android:text="Bejelentkezés"
+        android:text="Feltöltés"
         android:textColor="@android:color/white"/>
 </RelativeLayout>
