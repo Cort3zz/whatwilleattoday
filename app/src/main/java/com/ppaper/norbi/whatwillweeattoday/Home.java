@@ -163,7 +163,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 childSnapshot = (DataSnapshot) itr.next();
                 File picture = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + childSnapshot.getKey() + ".jpg");
                 try {
-                    FileUtils.writeByteArrayToFile(picture, Base64.getDecoder().decode(childSnapshot.getValue(Food.class).getEncodedPicture()));
+                    FileUtils.writeByteArrayToFile(picture, android.util.Base64.decode(childSnapshot.getValue(Food.class).getEncodedPicture(), android.util.Base64.DEFAULT));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -195,12 +195,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(foodListIntent);
             finishAffinity();
         } else if (id == R.id.food_vote_menu) {
-            Toast.makeText(Home.this, "Nézz vissza később!", Toast.LENGTH_LONG).show();
-            //Intent foodListIntent = new Intent(Home.this, FoodVote.class);
-            //startActivity(foodListIntent);
-        } else if (id == R.id.food_create_menu) {
-            Intent foodListIntent = new Intent(Home.this, CreateFood.class);
+            Intent foodListIntent = new Intent(Home.this, FoodVote.class);
             startActivity(foodListIntent);
+        } else if (id == R.id.food_create_menu) {
+            if (android.os.Build.VERSION.SDK_INT>25){
+            Intent foodListIntent = new Intent(Home.this, CreateFood.class);
+            startActivity(foodListIntent);}else{
+                Toast.makeText(Home.this, "A Készüléked túl régi ehhez a funkcióhoz!", Toast.LENGTH_LONG).show();
+            }
         } else if (id == R.id.logout) {
             moveTaskToBack(true);
             android.os.Process.killProcess(android.os.Process.myPid());

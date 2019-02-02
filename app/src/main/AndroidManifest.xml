@@ -26,6 +26,7 @@
         <activity android:name=".FoodList" />
         <activity android:name=".FoodVote" />
         <activity android:name=".CreateFood" />
+        <activity android:name=".VoteList" />
     </application>
 
 </manifest>

@@ -1,23 +1,21 @@
 package com.ppaper.norbi.whatwillweeattoday;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.widget.SlidingPaneLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
-import android.view.View;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ppaper.norbi.whatwillweeattoday.Interface.ItemClickListener;
 import com.ppaper.norbi.whatwillweeattoday.MenuHolder.MenuViewHolder;
@@ -37,12 +36,12 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 
-public class FoodList extends AppCompatActivity
+public class VoteList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseDatabase database;
-    DatabaseReference foodReference;
+    DatabaseReference databaseReference;
+    DatabaseReference voteReference;
 
     TextView userName;
     RecyclerView recyclerView;
@@ -51,21 +50,13 @@ public class FoodList extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_list);
+        setContentView(R.layout.food_vote);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Mit eszünk ma?");
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.food_list_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.food_vote_menu_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -81,7 +72,8 @@ public class FoodList extends AppCompatActivity
 
         //adatbázis betöltése
         database = FirebaseDatabase.getInstance();
-        foodReference = database.getReference("Food");
+
+        databaseReference = database.getReference("Food");
 
         //menü betöltése
         recyclerView = (RecyclerView) findViewById(R.id.recycler_menu);
@@ -94,11 +86,11 @@ public class FoodList extends AppCompatActivity
     }
 
     private void loadMenu() {
-        ProgressDialog mDialog = new ProgressDialog(FoodList.this);
+        ProgressDialog mDialog = new ProgressDialog(VoteList.this);
         mDialog.setMessage("Kérlek várj...");
         mDialog.show();
 
-        FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(Food.class, R.layout.menu_item, MenuViewHolder.class, foodReference) {
+        FirebaseRecyclerAdapter<Food, MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Food, MenuViewHolder>(Food.class, R.layout.list_item, MenuViewHolder.class, databaseReference) {
 
 
             @Override
@@ -112,7 +104,7 @@ public class FoodList extends AppCompatActivity
                     viewHolder.setItemClickListener(new ItemClickListener() {
                         @Override
                         public void onClick(View view, int position, boolean isLongClick) {
-                            Toast.makeText(FoodList.this, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VoteList.this, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (IOException e) {
@@ -122,7 +114,7 @@ public class FoodList extends AppCompatActivity
             }
 
         };
-        foodReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mDialog.dismiss();
@@ -184,7 +176,7 @@ public class FoodList extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.home_menu) {
-            Intent foodListIntent = new Intent(FoodList.this
+            Intent foodListIntent = new Intent(VoteList.this
                     , Home.class);
             startActivity(foodListIntent);
             finishAffinity();
@@ -192,14 +184,14 @@ public class FoodList extends AppCompatActivity
         if (id == R.id.food_list_menu) {
 
         } else if (id == R.id.food_vote_menu) {
-            Intent foodListIntent = new Intent(FoodList.this, FoodVote.class);
+            Intent foodListIntent = new Intent(VoteList.this, FoodVote.class);
             startActivity(foodListIntent);
         } else if (id == R.id.food_create_menu) {
             if (android.os.Build.VERSION.SDK_INT > 25) {
-                Intent foodListIntent = new Intent(FoodList.this, CreateFood.class);
+                Intent foodListIntent = new Intent(VoteList.this, CreateFood.class);
                 startActivity(foodListIntent);
             } else {
-                Toast.makeText(FoodList.this, "A Készüléked túl régi ehhez a funkcióhoz!", Toast.LENGTH_LONG).show();
+                Toast.makeText(VoteList.this, "A Készüléked túl régi ehhez a funkcióhoz!", Toast.LENGTH_LONG).show();
             }
         } else if (id == R.id.logout) {
             moveTaskToBack(true);

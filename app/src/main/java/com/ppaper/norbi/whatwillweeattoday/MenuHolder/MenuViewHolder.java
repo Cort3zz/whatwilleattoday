@@ -2,6 +2,7 @@ package com.ppaper.norbi.whatwillweeattoday.MenuHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView txtMenuName;
     public ImageView imageView;
 
+    public CheckBox voteCheckBox;
     private ItemClickListener itemClickListener;
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -24,6 +26,7 @@ public class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
         txtMenuName = (TextView) itemView.findViewById(R.id.menu_text);
         imageView = (ImageView) itemView.findViewById(R.id.menu_image);
+        voteCheckBox = (CheckBox) itemView.findViewById(R.id.chk_select);
 
         itemView.setOnClickListener(this);
 

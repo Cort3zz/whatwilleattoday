@@ -57,7 +57,7 @@ public class CreateFood extends Activity {
         newFoodName = (TextView) findViewById(R.id.newFoodName);
         createBtn = (Button) findViewById(R.id.btnCreate);
         imageView = (ImageView) findViewById(R.id.uploadedImage);
-        imgBackgroundText= (TextView) findViewById(R.id.imgBackgroundText);
+        imgBackgroundText = (TextView) findViewById(R.id.imgBackgroundText);
 
         imageView.setOnClickListener(new View.OnClickListener() {
 
@@ -73,13 +73,24 @@ public class CreateFood extends Activity {
         });
 
         createBtn.setOnClickListener(event -> {
+            if(imageView.getDrawable() == null){
+                if(imageView.getDrawable() == null){
+                    Toast.makeText(CreateFood.this, "Tölts fel képet az ételhez!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            if(newFoodName.getText().toString().matches("")){
+                Toast.makeText(CreateFood.this, "Add meg az étel nevét!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference table_food = database.getReference("Food");
 
             table_food.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     boolean isExist=false;
+
+                    boolean isExist = false;
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         if (data.getKey().equals(newFoodName.getText().toString())) {
                             Toast.makeText(CreateFood.this, "Ilyen néven szerepel már étel az adatbázisban!", Toast.LENGTH_SHORT).show();
@@ -88,7 +99,7 @@ public class CreateFood extends Activity {
 
                         }
                     }
-                    if(!isExist) {
+                    if (!isExist) {
                         Food food = new Food();
                         try {
                             food.setEncodedPicture(Base64.getEncoder().encodeToString(Files.readAllBytes(new File(picturePath).toPath())));

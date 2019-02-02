@@ -53,7 +53,7 @@ TextView txtSlogan;
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signIn = new Intent(Generator.this, SignIn.class);
+                Intent signIn = new Intent(Generator.this, FoodVote.class);
                 startActivity(signIn);
 
             }
